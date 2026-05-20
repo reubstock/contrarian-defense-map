@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Contrarian — Defense Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --paper: #ffffff;
+    --ink: #0a0a0c;
+    --ink-2: #2a2a30;
+    --ink-3: #5a5a64;
+    --ink-4: #9a9aa4;
+    --rule: #e6e3dc;
+    --rule-strong: #c9c4b8;
+    --red: #b22234;
+    --red-deep: #861a27;
+    --red-wash: #faf0f1;
+    --amber: #b8860b;
+    --green: #2f6f3a;
+    --blue: #2a4a7f;
+    --land: #f0ece2;
+    --land-stroke: #d8d2c2;
+    --serif: 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+
+  /* ─── Top bar ─── */
+  .topbar {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 14px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .wordmark .crumb {
+    color: var(--ink-3);
+    font-weight: 500;
+    font-style: italic;
+    margin-left: 10px;
+    font-size: 18px;
+  }
+  .topnav { display: flex; gap: 22px; font-size: 13px; font-weight: 500; color: var(--ink-3); }
+  .topnav a { text-decoration: none; }
+  .topnav a:hover { color: var(--ink); }
+  .topnav .subscribe {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 14px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 36px 28px 22px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+    align-items: end;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+  }
+  .hero h1 .red { color: var(--red); }
+  .hero p {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 600px;
+  }
+  .hero .meta {
+    border-left: 2px solid var(--red);
+    padding-left: 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .hero .meta strong { color: var(--ink); font-size: 22px; font-family: var(--serif); display: block; text-transform: none; letter-spacing: -0.01em; margin-bottom: 2px; }
+
+  /* ─── Controls ─── */
+  .controls {
+    max-width: 1340px;
+    margin: 22px auto 0;
+    padding: 14px 28px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    background: var(--paper);
+  }
+  .ctrl-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: 4px;
+  }
+  .segment {
+    display: inline-flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .segment button {
+    background: var(--paper);
+    border: 0;
+    padding: 7px 14px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-3);
+    cursor: pointer;
+    border-right: 1px solid var(--rule-strong);
+  }
+  .segment button:last-child { border-right: 0; }
+  .segment button.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    padding: 6px 12px 6px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-2);
+    background: var(--paper);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--ink-3); }
+  .chip .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--ink-4);
+  }
+  .chip.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .chip.muted { opacity: 0.4; }
+  .spacer { flex: 1; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: var(--ink-3); align-items: center; }
+  .legend .swatch { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+  /* ─── Main map area ─── */
+  .stage {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    background: var(--paper);
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+  }
+  .map-wrap {
+    position: relative;
+    border-right: 1px solid var(--rule);
+    min-height: 620px;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.025) 100%),
+      var(--paper);
+  }
+  #map { display: block; width: 100%; height: 620px; }
+  .map-overlay-title {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--ink-3);
+    font-style: italic;
+    pointer-events: none;
+  }
+  .map-counter {
+    position: absolute;
+    bottom: 16px;
+    left: 20px;
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .map-counter b { color: var(--ink); font-size: 20px; font-family: var(--serif); display: inline-block; margin-right: 4px; font-weight: 700; }
+  .pin {
+    cursor: pointer;
+    transition: transform .15s;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .pin:hover circle.body { stroke-width: 3; }
+  .pin.selected circle.body { stroke: var(--ink); stroke-width: 3; }
+  .pin.faded { opacity: 0.15; pointer-events: none; }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 11px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.35;
+    max-width: 240px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity .12s;
+    transform: translate(-50%, -100%);
+    margin-top: -10px;
+  }
+  .tooltip::after {
+    content: ''; position: absolute; left: 50%; bottom: -5px;
+    border: 5px solid transparent; border-top-color: var(--ink); border-bottom: 0;
+    transform: translateX(-50%);
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .cat { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; font-weight: 600; margin-bottom: 3px; }
+
+  /* ─── Drawer ─── */
+  .drawer {
+    padding: 24px 26px 32px;
+    overflow-y: auto;
+    max-height: 620px;
+  }
+  .drawer-empty {
+    color: var(--ink-3);
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.5;
+    font-style: italic;
+    padding: 60px 8px 0;
+  }
+  .drawer-empty .hint {
+    margin-top: 18px;
+    font-style: normal;
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-4);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .drawer-empty .featured-list {
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  .drawer-empty .featured-list button {
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    color: var(--ink-2);
+    font: inherit;
+    cursor: pointer;
+    border-bottom: 1px dotted var(--rule-strong);
+  }
+  .drawer-empty .featured-list button:hover { color: var(--red); border-color: var(--red); }
+  .drawer-empty .featured-list li { padding: 4px 0; }
+
+  .threat-cat {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    color: var(--paper);
+  }
+  .threat-loc {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .threat-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 6px 0 10px;
+    color: var(--ink);
+  }
+  .threat-summary {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+  }
+  .threat-source {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-style: italic;
+    border-top: 1px solid var(--rule);
+    padding-top: 10px;
+    margin-bottom: 22px;
+  }
+  .threat-source a { color: var(--ink-2); }
+
+  .status-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .status-pill {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 2px;
+    border: 1px solid var(--rule-strong);
+    color: var(--ink-3);
+  }
+  .status-pill.active { background: var(--red-wash); color: var(--red-deep); border-color: var(--red-wash); }
+  .status-pill.pushback { background: #fdf5e0; color: #7a5610; border-color: #fdf5e0; }
+  .status-pill.blocked { background: #e8f1ea; color: var(--green); border-color: #e8f1ea; }
+
+  /* Counter section */
+  .counter {
+    background: #1a1a1f;
+    color: var(--paper);
+    margin: 14px -26px 0;
+    padding: 20px 26px 24px;
+  }
+  .counter h3 {
+    margin: 0 0 14px;
+    font-family: var(--serif);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper);
+    font-weight: 700;
+  }
+  .counter h3::before {
+    content: '↳';
+    color: var(--red);
+    margin-right: 8px;
+    font-style: normal;
+    display: inline-block;
+    transform: rotate(180deg);
+  }
+  .action {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid #2c2c33;
+    cursor: pointer;
+  }
+  .action:first-of-type { border-top: 0; padding-top: 4px; }
+  .action:hover .action-title { color: #fff; text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .action-verb {
+    flex: 0 0 60px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding-top: 3px;
+  }
+  .action-body { flex: 1; }
+  .action-title {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.3;
+    color: #f0e9d6;
+    font-weight: 500;
+    margin: 0 0 3px;
+  }
+  .action-detail {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #9a9aa4;
+  }
+
+  .footer-note {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 14px 28px 32px;
+    font-size: 11px;
+    color: var(--ink-4);
+    line-height: 1.5;
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .footer-note .demo-tag {
+    display: inline-block;
+    background: var(--red-wash);
+    color: var(--red-deep);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 2px;
+    margin-right: 8px;
+  }
+
+  /* responsive */
+  @media (max-width: 1024px) {
+    .stage { grid-template-columns: 1fr; }
+    .map-wrap { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .drawer { max-height: none; }
+    .hero { grid-template-columns: 1fr; gap: 18px; }
+    .hero h1 { font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wordmark">The Contrarian<span class="crumb">/ Defense Map</span></div>
+  <nav class="topnav">
+    <a href="#">Reporting</a>
+    <a href="#">Voices</a>
+    <a href="#" style="color: var(--ink);">Defense Map</a>
+    <a href="#">About</a>
+    <a href="#" class="subscribe">Subscribe</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Every threat to democracy,<br>paired with a <span class="red">countermeasure</span>.</h1>
+    <p>Authoritarian moves are coordinated. The response shouldn't be scattered. We track the actions corporate media won't connect — and give you something concrete to do about each one.</p>
+  </div>
+  <div class="meta">
+    <strong>47 active threats</strong>
+    tracked across federal & state action this week<br>
+    <span style="color: var(--green);">▲</span> 12 with pushback in motion · 4 blocked
+  </div>
+</section>
+
+<div class="controls">
+  <span class="ctrl-label">View</span>
+  <div class="segment" id="viewSeg">
+    <button class="active" data-view="featured">Featured this week</button>
+    <button data-view="all">All threats</button>
+  </div>
+
+  <span class="ctrl-label" style="margin-left: 8px;">Category</span>
+  <div class="chips" id="catChips"></div>
+
+  <span class="spacer"></span>
+
+  <div class="legend">
+    <span><span class="swatch" style="background: var(--red); border: 2px solid var(--red);"></span>Active</span>
+    <span><span class="swatch" style="background: var(--amber); border: 2px solid var(--amber);"></span>Pushback</span>
+    <span><span class="swatch" style="background: var(--green); border: 2px solid var(--green);"></span>Blocked</span>
+  </div>
+</div>
+
+<main class="stage">
+  <div class="map-wrap">
+    <div class="map-overlay-title">United States · federal action shown over Washington, D.C.</div>
+    <svg id="map" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="map-counter"><b id="visCount">—</b>visible</div>
+    <div id="tip" class="tooltip"></div>
+  </div>
+
+  <aside class="drawer" id="drawer">
+    <div class="drawer-empty" id="drawerEmpty">
+      Click a marker to see the reporting and a concrete response.
+      <div class="hint">Featured this week</div>
+      <ul class="featured-list" id="featuredList"></ul>
+    </div>
+    <div id="drawerContent" style="display: none;"></div>
+  </aside>
+</main>
+
+<div class="footer-note">
+  <span class="demo-tag">Demo</span>
+  Illustrative prototype. Items reflect publicly reported categories of action through May 2026 but are <em>not</em> a live newsroom feed — final build would draw on Contrarian editorial selection plus partner reporting. Countermeasure links are placeholders.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+<script>
+// ─────────────────────────────────────────────────────────────
+// CATEGORIES
+// ─────────────────────────────────────────────────────────────
+const CATEGORIES = {
+  courts:    { label: 'Courts & Rule of Law',   color: '#b22234' },
+  press:     { label: 'Press Freedom',           color: '#2a4a7f' },
+  workforce: { label: 'Federal Workforce',       color: '#7a3a8f' },
+  voting:    { label: 'Voting & Elections',      color: '#1f7a5a' },
+  rights:    { label: 'Civil Rights',            color: '#c45a0b' },
+  education: { label: 'Education & Speech',      color: '#7a6b1a' },
+};
+
+// ─────────────────────────────────────────────────────────────
+// ITEMS  (illustrative; final build = curated editorial)
+//   coords are [lon, lat] for d3.geoAlbersUsa()
+// ─────────────────────────────────────────────────────────────
+const ITEMS = [
+  {
+    id: 't01',
+    title: 'Inspectors general dismissed across five federal agencies',
+    cat: 'workforce',
+    coord: [-77.0369, 38.9072], // DC
+    loc: 'Washington, D.C.',
+    date: 'May 14, 2026',
+    status: 'active',
+    featured: true,
+    summary: 'Independent watchdogs across the EPA, Treasury, Interior, HHS, and DOE were terminated without the statutory 30-day Congressional notification. The dismissals follow a pattern of removing officials who flagged irregularities in agency contracting.',
+    source: 'Reported by Contrarian newsroom, with reference to Politico and Government Executive coverage.',
+    actions: [
+      { verb: 'Call', title: 'Senate Homeland Security Committee members', detail: 'Demand a hearing on the IG Protection Act (S. 587). Script & numbers ready.' },
+      { verb: 'Donate', title: 'Project on Government Oversight (POGO)', detail: 'Tracking and litigating the dismissals.' },
+      { verb: 'Read', title: '"Why IG firings are the canary"', detail: 'By [Contrarian legal scholar] — what the 1978 statute was designed to prevent.' },
+    ],
+  },
+  {
+    id: 't02',
+    title: 'Reporter credentials revoked at Department of Justice briefings',
+    cat: 'press',
+    coord: [-77.015, 38.893],
+    loc: 'Washington, D.C.',
+    date: 'May 11, 2026',
+    status: 'pushback',
+    featured: true,
+    summary: 'Three reporters from outlets that published critical coverage had their hard passes pulled with no stated cause. The White House Correspondents\' Association has filed a formal complaint and is preparing litigation.',
+    source: 'Reported by Reporters Committee for Freedom of the Press.',
+    actions: [
+      { verb: 'Donate', title: 'Reporters Committee for Freedom of the Press', detail: 'Funding the credential-revocation suit.' },
+      { verb: 'Subscribe', title: 'Local & independent newsrooms in your state', detail: 'The fastest pushback against access journalism is parallel infrastructure.' },
+      { verb: 'Read', title: '"The credential pull is the warning shot"', detail: 'Contrarian press-freedom series, Part III.' },
+    ],
+  },
+  {
+    id: 't03',
+    title: 'State voter roll purge targets 380,000 registrations',
+    cat: 'voting',
+    coord: [-84.388, 33.749], // Atlanta
+    loc: 'Georgia',
+    date: 'May 8, 2026',
+    status: 'pushback',
+    featured: true,
+    summary: 'Secretary of State announced a "list maintenance" purge of registrations flagged via a third-party data vendor with known accuracy problems. Civil rights coalition filed for an injunction in federal court.',
+    source: 'AJC, Brennan Center analysis.',
+    actions: [
+      { verb: 'Check', title: 'Your registration at vote.org', detail: 'Especially if you\'ve moved since 2022 or have a common surname.' },
+      { verb: 'Donate', title: 'Fair Fight Action', detail: 'Underwriting the Georgia litigation.' },
+      { verb: 'Volunteer', title: 'Poll-monitor sign-up for November', detail: 'Trained volunteers reduce wrongful purge effects on Election Day.' },
+    ],
+  },
+  {
+    id: 't04',
+    title: 'University funding tied to viewpoint review board',
+    cat: 'education',
+    coord: [-82.452, 27.964], // Tampa-ish, Florida
+    loc: 'Florida',
+    date: 'May 6, 2026',
+    status: 'active',
+    featured: true,
+    summary: 'New state rule conditions public-university research funding on faculty review by a state-appointed "intellectual diversity board." Twelve department chairs have resigned in protest.',
+    source: 'Tampa Bay Times, Chronicle of Higher Education.',
+    actions: [
+      { verb: 'Call', title: 'Florida House Education Committee', detail: 'HB 2103 reauthorization is up for vote in June.' },
+      { verb: 'Donate', title: 'PEN America Florida campus fund', detail: 'Legal defense for sanctioned faculty.' },
+      { verb: 'Attend', title: 'Faculty solidarity teach-in · May 28', detail: 'Open to the public, livestreamed.' },
+    ],
+  },
+  {
+    id: 't05',
+    title: 'Federal judge faces impeachment articles over ruling',
+    cat: 'courts',
+    coord: [-87.65, 41.85], // Chicago
+    loc: 'Northern District of Illinois',
+    date: 'May 4, 2026',
+    status: 'active',
+    featured: true,
+    summary: 'House members introduced articles of impeachment against a sitting federal judge after a ruling that paused deportation flights pending due-process review. Bar associations across nine states have issued joint condemnation.',
+    source: 'ABA News, Law360.',
+    actions: [
+      { verb: 'Call', title: 'Your House Representative', detail: 'Oppose H. Res. 412. Two-minute script available.' },
+      { verb: 'Donate', title: 'American Constitution Society', detail: 'Coordinating bar-association response.' },
+      { verb: 'Read', title: '"Judicial impeachment as political weapon"', detail: 'Historian on the 1805 Chase precedent and why it failed.' },
+    ],
+  },
+  {
+    id: 't06',
+    title: 'ICE raids at courthouse expand to family-court arrivals',
+    cat: 'rights',
+    coord: [-118.243, 34.052], // LA
+    loc: 'Los Angeles County',
+    date: 'May 13, 2026',
+    status: 'pushback',
+    featured: true,
+    summary: 'Enforcement operations at the Stanley Mosk Courthouse expanded this week to include family-court litigants and witnesses. County Bar voted to lobby for sanctuary-courthouse status.',
+    source: 'LA Times, ACLU SoCal.',
+    actions: [
+      { verb: 'Donate', title: 'CHIRLA legal defense fund', detail: 'Representation for arrestees at the courthouse.' },
+      { verb: 'Call', title: 'CA AG\'s office', detail: 'Urge guidance under SB 54 for courthouse interactions.' },
+      { verb: 'Volunteer', title: 'Court accompaniment program', detail: 'Trained observers reduce arrest probability — training every Saturday.' },
+    ],
+  },
+
+  // ─── non-featured items ───
+  {
+    id: 't07',
+    title: 'Library board removes 47 titles citing "age-inappropriate themes"',
+    cat: 'education',
+    coord: [-95.358, 29.749], // Houston
+    loc: 'Harris County, Texas',
+    date: 'May 7, 2026',
+    status: 'pushback',
+    featured: false,
+    summary: 'Following a closed-session vote, the regional library board pulled 47 titles. ACLU of Texas filed under the First Amendment within 48 hours.',
+    source: 'Houston Chronicle.',
+    actions: [
+      { verb: 'Donate', title: 'ACLU of Texas', detail: 'Underwriting Harris County litigation.' },
+      { verb: 'Attend', title: 'Library board meeting · June 3', detail: 'Public comment period open.' },
+    ],
+  },
+  {
+    id: 't08',
+    title: 'State AG opens "election fraud" probe into 2024 vote tallies',
+    cat: 'voting',
+    coord: [-112.074, 33.448], // Phoenix
+    loc: 'Arizona',
+    date: 'May 9, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'Despite no new evidence, the attorney general announced a fresh probe into the 2024 county-level results, with subpoenas issued to three county recorders.',
+    source: 'Arizona Republic.',
+    actions: [
+      { verb: 'Donate', title: 'States United Democracy Center', detail: 'Defending the targeted county officials.' },
+      { verb: 'Read', title: '"How investigations become intimidation"', detail: 'Contrarian elections desk.' },
+    ],
+  },
+  {
+    id: 't09',
+    title: 'NIH research grant clawbacks target health-equity studies',
+    cat: 'workforce',
+    coord: [-77.108, 39.000], // Bethesda
+    loc: 'Bethesda, MD',
+    date: 'May 10, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'NIH rescinded $312M in active grants flagged as "ideologically biased," including longitudinal maternal-mortality studies at four universities.',
+    source: 'Science magazine, STAT News.',
+    actions: [
+      { verb: 'Call', title: 'Senate HELP Committee', detail: 'Demand oversight hearing on NIH clawback authority.' },
+      { verb: 'Donate', title: 'Federation of American Scientists rapid-response', detail: 'Bridge funding for terminated studies.' },
+    ],
+  },
+  {
+    id: 't10',
+    title: 'Public defender office defunded after represented client win',
+    cat: 'courts',
+    coord: [-86.781, 36.162], // Nashville
+    loc: 'Tennessee',
+    date: 'May 5, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'State legislature passed an appropriations rider stripping 38% of the public defender budget after a high-profile acquittal in a politically charged case.',
+    source: 'Tennessean.',
+    actions: [
+      { verb: 'Donate', title: 'National Assoc. of Criminal Defense Lawyers', detail: 'Cross-state PD support fund.' },
+    ],
+  },
+  {
+    id: 't11',
+    title: 'Local broadcaster license challenged at FCC',
+    cat: 'press',
+    coord: [-93.265, 44.977], // Minneapolis
+    loc: 'Minneapolis',
+    date: 'May 3, 2026',
+    status: 'blocked',
+    featured: false,
+    summary: 'FCC commissioner-initiated license review of a local affiliate following critical political coverage was unanimously rejected by the full commission.',
+    source: 'Star Tribune, FCC docket.',
+    actions: [
+      { verb: 'Read', title: '"A win worth studying"', detail: 'How the affiliate prepared.' },
+      { verb: 'Subscribe', title: 'Minnesota Reformer', detail: 'Independent state-level coverage.' },
+    ],
+  },
+  {
+    id: 't12',
+    title: 'State guardsmen deployed to "support" voter-roll inspections',
+    cat: 'voting',
+    coord: [-104.991, 39.739], // Denver area for variety; actually use NC pin elsewhere
+    loc: 'North Carolina',
+    date: 'Apr 30, 2026',
+    status: 'pushback',
+    featured: false,
+    summary: 'Governor activated state guard units to "assist" county election boards with list-maintenance reviews, drawing immediate legal challenge from Democracy Forward.',
+    source: 'Raleigh N&O, Democracy Forward filing.',
+    actions: [
+      { verb: 'Donate', title: 'Democracy Forward', detail: 'Lead counsel on the NC challenge.' },
+    ],
+  },
+  {
+    id: 't13',
+    title: 'Civil rights division reassigns 60 attorneys away from voting cases',
+    cat: 'rights',
+    coord: [-77.05, 38.85],
+    loc: 'DOJ HQ, Washington, D.C.',
+    date: 'May 2, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'Internal reorganization moves voting-rights and police-pattern attorneys to "election integrity" enforcement, effectively reversing the unit\'s historical mission.',
+    source: 'NYT.',
+    actions: [
+      { verb: 'Read', title: 'Vanita Gupta on the Civil Rights Division', detail: 'Contrarian symposium piece.' },
+      { verb: 'Donate', title: 'Lawyers\' Committee for Civil Rights Under Law', detail: 'Filling the enforcement gap.' },
+    ],
+  },
+  {
+    id: 't14',
+    title: 'School curriculum review board gains veto over teacher hiring',
+    cat: 'education',
+    coord: [-86.158, 39.768], // Indianapolis
+    loc: 'Indiana',
+    date: 'May 1, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'New state statute empowers the politically-appointed review board to veto district-level hiring decisions when teacher syllabi conflict with state "instructional values."',
+    source: 'Indianapolis Star.',
+    actions: [
+      { verb: 'Call', title: 'Your state representative', detail: 'Repeal SB 308 in next session.' },
+      { verb: 'Donate', title: 'Indiana State Teachers Association legal fund', detail: '' },
+    ],
+  },
+  {
+    id: 't15',
+    title: 'FBI field office reorgs prioritize "domestic threat" categories',
+    cat: 'workforce',
+    coord: [-71.06, 42.35], // Boston
+    loc: 'Boston Field Office',
+    date: 'Apr 28, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'Internal memo reassigns counterintelligence and white-collar staffing toward newly-defined "domestic threat" categories that include protest movements.',
+    source: 'Boston Globe.',
+    actions: [
+      { verb: 'Read', title: '"When the FBI redefines its targets"', detail: 'Contrarian civil-liberties desk.' },
+      { verb: 'Donate', title: 'Brennan Center for Justice', detail: 'Liberty & national security program.' },
+    ],
+  },
+  {
+    id: 't16',
+    title: 'Court restricts protest near federal buildings',
+    cat: 'rights',
+    coord: [-122.419, 37.775], // SF
+    loc: 'Ninth Circuit',
+    date: 'May 12, 2026',
+    status: 'pushback',
+    featured: false,
+    summary: 'A three-judge panel upheld a 200-foot protest buffer around federal courthouses. ACLU has petitioned for en banc review.',
+    source: 'Courthouse News.',
+    actions: [
+      { verb: 'Donate', title: 'ACLU of Northern California', detail: 'En banc petition support.' },
+    ],
+  },
+  {
+    id: 't17',
+    title: 'Statehouse strips early voting hours in five urban counties',
+    cat: 'voting',
+    coord: [-81.69, 41.49], // Cleveland
+    loc: 'Ohio',
+    date: 'Apr 26, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'New law eliminates Sunday early voting and reduces weekday hours by 40% in counties above 250,000 population — a targeted urban-county reduction.',
+    source: 'Cleveland Plain Dealer.',
+    actions: [
+      { verb: 'Call', title: 'Ohio Secretary of State', detail: 'Demand uniform statewide early voting hours.' },
+      { verb: 'Volunteer', title: 'Rideshare to the polls', detail: 'Local NAACP coordinating.' },
+    ],
+  },
+  {
+    id: 't18',
+    title: 'PBS station defunded by state legislature',
+    cat: 'press',
+    coord: [-97.74, 30.27], // Austin
+    loc: 'Texas',
+    date: 'May 9, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'State portion of two PBS affiliates\' funding was zeroed in the new biennial budget, citing "ideological imbalance." Stations are running emergency member drives.',
+    source: 'Texas Tribune.',
+    actions: [
+      { verb: 'Subscribe', title: 'KLRU & Houston Public Media', detail: 'Direct membership.' },
+    ],
+  },
+  {
+    id: 't19',
+    title: 'Federal contracts steered to favored vendor without bid',
+    cat: 'workforce',
+    coord: [-112.46, 38.5], // Utah area
+    loc: 'Federal lands · Utah',
+    date: 'Apr 22, 2026',
+    status: 'pushback',
+    featured: false,
+    summary: 'BLM awarded $89M in no-bid contracts to a vendor with documented ties to administration donors. POGO and Public Citizen filed FOIA suits.',
+    source: 'ProPublica.',
+    actions: [
+      { verb: 'Donate', title: 'Public Citizen', detail: 'FOIA and contract-review program.' },
+    ],
+  },
+  {
+    id: 't20',
+    title: 'Whistleblower at HHS placed on administrative leave',
+    cat: 'workforce',
+    coord: [-77.03, 38.90],
+    loc: 'HHS Washington, D.C.',
+    date: 'May 16, 2026',
+    status: 'active',
+    featured: false,
+    summary: 'A career employee who reported missing oversight on a benefits-program contract was placed on indefinite leave 48 hours after filing the disclosure.',
+    source: 'Government Accountability Project.',
+    actions: [
+      { verb: 'Donate', title: 'Government Accountability Project', detail: 'Whistleblower legal representation.' },
+      { verb: 'Read', title: 'How the Whistleblower Protection Act is supposed to work', detail: '' },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+let view = 'featured';                  // 'featured' | 'all'
+let activeCats = new Set(Object.keys(CATEGORIES));  // all on by default
+let selectedId = null;
+
+// ─────────────────────────────────────────────────────────────
+// SETUP: chips
+// ─────────────────────────────────────────────────────────────
+const chipsEl = document.getElementById('catChips');
+Object.entries(CATEGORIES).forEach(([key, { label, color }]) => {
+  const b = document.createElement('button');
+  b.className = 'chip active';
+  b.dataset.cat = key;
+  b.innerHTML = `<span class="dot" style="background:${color}"></span>${label}`;
+  b.onclick = () => {
+    if (activeCats.has(key)) {
+      activeCats.delete(key);
+      b.classList.remove('active');
+    } else {
+      activeCats.add(key);
+      b.classList.add('active');
+    }
+    render();
+  };
+  chipsEl.appendChild(b);
+});
+
+// View segment
+document.querySelectorAll('#viewSeg button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('#viewSeg button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    view = btn.dataset.view;
+    render();
+  };
+});
+
+// ─────────────────────────────────────────────────────────────
+// MAP
+// ─────────────────────────────────────────────────────────────
+const svg = d3.select('#map');
+const W = 960, H = 600;
+const projection = d3.geoAlbersUsa().scale(1180).translate([W / 2, H / 2]);
+const path = d3.geoPath(projection);
+const gStates = svg.append('g').attr('class', 'states');
+const gPins   = svg.append('g').attr('class', 'pins');
+
+const tip = document.getElementById('tip');
+const mapWrap = document.querySelector('.map-wrap');
+
+d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+  const states = topojson.feature(us, us.objects.states).features;
+  gStates.selectAll('path')
+    .data(states)
+    .join('path')
+    .attr('d', path)
+    .attr('fill', 'var(--land)')
+    .attr('stroke', 'var(--land-stroke)')
+    .attr('stroke-width', 0.6);
+  render();
+});
+
+function visibleItems() {
+  return ITEMS.filter(it => {
+    if (view === 'featured' && !it.featured) return false;
+    if (!activeCats.has(it.cat)) return false;
+    return true;
+  });
+}
+
+function jitter(items) {
+  // detect overlapping pins (after projection) and nudge slightly
+  const placed = [];
+  return items.map(it => {
+    const p = projection(it.coord);
+    if (!p) return null;
+    let [x, y] = p;
+    let attempt = 0;
+    while (attempt < 8 && placed.some(([px, py]) => Math.hypot(px - x, py - y) < 18)) {
+      const ang = (attempt + 1) * Math.PI / 3;
+      const r = 14 + attempt * 4;
+      x = p[0] + Math.cos(ang) * r;
+      y = p[1] + Math.sin(ang) * r;
+      attempt++;
+    }
+    placed.push([x, y]);
+    return { ...it, x, y };
+  }).filter(Boolean);
+}
+
+function render() {
+  const items = jitter(visibleItems());
+  document.getElementById('visCount').textContent = items.length;
+
+  // pins
+  const pin = gPins.selectAll('g.pin').data(items, d => d.id);
+  pin.exit().remove();
+
+  const enter = pin.enter().append('g')
+    .attr('class', 'pin')
+    .attr('transform', d => `translate(${d.x},${d.y})`);
+
+  enter.append('circle')
+    .attr('class', 'halo')
+    .attr('r', 14)
+    .attr('fill', d => CATEGORIES[d.cat].color)
+    .attr('fill-opacity', 0.13);
+
+  enter.append('circle')
+    .attr('class', 'body')
+    .attr('r', 7)
+    .attr('fill', d => CATEGORIES[d.cat].color)
+    .attr('stroke', d => statusStroke(d.status))
+    .attr('stroke-width', 2.5);
+
+  enter.append('circle')
+    .attr('class', 'core')
+    .attr('r', 2.5)
+    .attr('fill', '#fff')
+    .attr('fill-opacity', 0.85);
+
+  enter.merge(pin)
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .classed('selected', d => d.id === selectedId)
+    .on('mouseenter', function(ev, d) {
+      const r = mapWrap.getBoundingClientRect();
+      tip.innerHTML = `<div class="cat">${CATEGORIES[d.cat].label}</div>${d.title}`;
+      tip.style.left = (ev.clientX - r.left) + 'px';
+      tip.style.top  = (ev.clientY - r.top) + 'px';
+      tip.classList.add('visible');
+    })
+    .on('mousemove', function(ev) {
+      const r = mapWrap.getBoundingClientRect();
+      tip.style.left = (ev.clientX - r.left) + 'px';
+      tip.style.top  = (ev.clientY - r.top) + 'px';
+    })
+    .on('mouseleave', () => tip.classList.remove('visible'))
+    .on('click', (ev, d) => selectItem(d.id));
+
+  enter.merge(pin).select('circle.body')
+    .attr('stroke', d => statusStroke(d.status));
+
+  // update featured list when in empty state
+  renderFeaturedList();
+}
+
+function statusStroke(s) {
+  if (s === 'active') return '#b22234';
+  if (s === 'pushback') return '#b8860b';
+  if (s === 'blocked') return '#2f6f3a';
+  return '#000';
+}
+
+// ─────────────────────────────────────────────────────────────
+// DRAWER
+// ─────────────────────────────────────────────────────────────
+const drawerEmpty = document.getElementById('drawerEmpty');
+const drawerContent = document.getElementById('drawerContent');
+const featuredListEl = document.getElementById('featuredList');
+
+function renderFeaturedList() {
+  featuredListEl.innerHTML = '';
+  ITEMS.filter(i => i.featured).slice(0, 6).forEach(it => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.textContent = it.title;
+    btn.onclick = () => selectItem(it.id);
+    li.appendChild(btn);
+    featuredListEl.appendChild(li);
+  });
+}
+
+function selectItem(id) {
+  selectedId = id;
+  const it = ITEMS.find(i => i.id === id);
+  if (!it) return;
+  drawerEmpty.style.display = 'none';
+  drawerContent.style.display = 'block';
+  drawerContent.innerHTML = `
+    <span class="threat-cat" style="background:${CATEGORIES[it.cat].color}">${CATEGORIES[it.cat].label}</span>
+    <div class="threat-loc">${it.loc} · ${it.date}</div>
+    <h2 class="threat-title">${it.title}</h2>
+    <div class="status-bar">
+      <span class="status-pill ${it.status}">${it.status === 'active' ? 'Active threat' : it.status === 'pushback' ? 'Pushback in motion' : 'Blocked'}</span>
+    </div>
+    <p class="threat-summary">${it.summary}</p>
+    <div class="threat-source">${it.source}</div>
+
+    <div class="counter">
+      <h3>What you can do</h3>
+      ${it.actions.map(a => `
+        <div class="action">
+          <div class="action-verb">${a.verb}</div>
+          <div class="action-body">
+            <div class="action-title">${a.title}</div>
+            ${a.detail ? `<div class="action-detail">${a.detail}</div>` : ''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  // re-render to update selection ring
+  d3.selectAll('g.pin').classed('selected', d => d.id === selectedId);
+}
+</script>
+</body>
+</html>
