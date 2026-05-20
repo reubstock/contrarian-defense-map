@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Contrarian — Defense Map</title>
+<link rel="icon" type="image/png" href="contrarian-logo.png">
+<link rel="apple-touch-icon" href="contrarian-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +19,8 @@
     --ink-4: #9a9aa4;
     --rule: #e6e3dc;
     --rule-strong: #c9c4b8;
+    --brand: #0a18ee;
+    --brand-deep: #0510a8;
     --red: #b22234;
     --red-deep: #861a27;
     --red-wash: #faf0f1;
@@ -46,6 +50,15 @@
     font-size: 22px;
     letter-spacing: -0.01em;
     color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .wordmark img.logo {
+    width: 34px;
+    height: 34px;
+    display: block;
+    border-radius: 2px;
   }
   .wordmark .crumb {
     color: var(--ink-3);
@@ -83,7 +96,7 @@
     letter-spacing: -0.02em;
     margin: 0 0 14px;
   }
-  .hero h1 .red { color: var(--red); }
+  .hero h1 .red { color: var(--brand); }
   .hero p {
     font-family: var(--serif);
     font-size: 19px;
@@ -93,7 +106,7 @@
     max-width: 600px;
   }
   .hero .meta {
-    border-left: 2px solid var(--red);
+    border-left: 2px solid var(--brand);
     padding-left: 14px;
     font-size: 12px;
     line-height: 1.5;
@@ -295,7 +308,7 @@
     cursor: pointer;
     border-bottom: 1px dotted var(--rule-strong);
   }
-  .drawer-empty .featured-list button:hover { color: var(--red); border-color: var(--red); }
+  .drawer-empty .featured-list button:hover { color: var(--brand); border-color: var(--brand); }
   .drawer-empty .featured-list li { padding: 4px 0; }
 
   .threat-cat {
@@ -380,7 +393,7 @@
   }
   .counter h3::before {
     content: '↳';
-    color: var(--red);
+    color: var(--brand);
     margin-right: 8px;
     font-style: normal;
     display: inline-block;
@@ -394,14 +407,14 @@
     cursor: pointer;
   }
   .action:first-of-type { border-top: 0; padding-top: 4px; }
-  .action:hover .action-title { color: #fff; text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .action:hover .action-title { color: #fff; text-decoration: underline; text-decoration-color: var(--brand); text-decoration-thickness: 1px; text-underline-offset: 3px; }
   .action-verb {
     flex: 0 0 60px;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--red);
+    color: #6f7bff;
     padding-top: 3px;
   }
   .action-body { flex: 1; }
@@ -457,7 +470,11 @@
 <body>
 
 <header class="topbar">
-  <div class="wordmark">The Contrarian<span class="crumb">/ Defense Map</span></div>
+  <div class="wordmark">
+    <img class="logo" src="contrarian-logo.png" alt="The Contrarian">
+    <span>The Contrarian</span>
+    <span class="crumb">/ Defense Map</span>
+  </div>
   <nav class="topnav">
     <a href="#">Reporting</a>
     <a href="#">Voices</a>
